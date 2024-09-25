@@ -9,11 +9,12 @@ import React, { useState } from 'react';
 const Stack = createNativeStackNavigator();
 
 /**View Sceen 1 - The product information */
-function HomeScreen({navigation}) {
+function HomeScreen({navigation,route}) {
   return (
     <SafeAreaView style={styles.container}>
         <View style={{flex:3, justifyContent:'center', alignItems:'center'}}>
-          <Image source={require("./assets/phone-xanh.jpg")} style = {{resizeMode:'cover'}}/>
+          {/**Get attribute imgage from route navigation to SelectColor */}
+          <Image source={route.params?.imageUrl} style = {{resizeMode:'cover'}}/>
         </View>
         
         {/* The product information */} 
@@ -73,7 +74,7 @@ function HomeScreen({navigation}) {
 }
 
 /**View Sceen 2 - Select Colors */
-function SelectColor() {
+function SelectColor({navigation, route}) {
 
     const [product, setProduct] = useState({
       name: 'Điện Thoại Vsmart Joy 3 Hàng chính hãng',
@@ -90,7 +91,7 @@ function SelectColor() {
 
     /**View Screen */
     return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {marginTop: 40}]}>
         {/** View1_The product information*/}
         <View style={{flex:2, flexDirection:'row', alignItems:'center', gap:20, marginLeft:20}}>
           
@@ -151,7 +152,14 @@ function SelectColor() {
 
           {/** Button Chọn màu bên dưới*/}
           <View style= {{flex:1,alignItems:'center', justifyContent:'flex-end'}}>
-            <TouchableOpacity style={{width:'100%', height:'50%', backgroundColor:"rgba(25, 82, 226, 0.58)",alignItems:'center', justifyContent:'center', borderRadius:10, shadowOffset:{width: 4,height: 2}, shadowColor:'black', shadowOpacity:0.1}}>
+            <TouchableOpacity style={{width:'100%', height:'50%', backgroundColor:"rgba(25, 82, 226, 0.58)",alignItems:'center', justifyContent:'center', borderRadius:10}}
+               /**Even Get Color*/
+              onPress={() => navigation.navigate({
+                name:'HomeScreen',
+                params: {imageUrl: product.image},
+                merge:true
+              })}
+            >
               <Text style={{fontFamily: 'Roboto',fontSize: 20,fontWeight: 'bold',lineHeight: 21.09, color:'white'}}>XONG</Text>
             </TouchableOpacity>
           </View>
