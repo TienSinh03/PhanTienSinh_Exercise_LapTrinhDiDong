@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 const DATA = [
     {
@@ -81,8 +81,23 @@ const Item = ({name, image, shop}) => (
   </View>
 );
 
-export default function App() {
-  cost [data, setData] = useState([])
+export default function App() { 
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://66fa5539afc569e13a9b4585.mockapi.io/product/product')
+      .then((response) => response.json()) // Parse JSON data from the response
+      .then((json) => {
+        setData(json); // Set the fetched data to state
+        setLoading(false); // Stop loading indicator
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       {/* header - list product */}
@@ -98,7 +113,7 @@ export default function App() {
         </View>
 
         <FlatList
-          data={DATA}
+          data={data}
           renderItem={({item}) => <Item name={item.name} image={item.image} shop={item.shop} />}
           keyExtractor={item => item.id}
         />
