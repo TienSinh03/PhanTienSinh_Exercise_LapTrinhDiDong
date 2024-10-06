@@ -11,57 +11,6 @@ import {
 
 import React, { useState,useEffect } from 'react';
 
-const DATA = [
-    {
-        "id": "sp001",
-        "name": "ca nau lau, nau mi mini",
-        "shop": "Devang",
-        "image": "https://picsum.photos/200"
-    },
-    {
-        "id": "sp002",
-        "name": "ca 1kg kho ga bo toi",
-        "shop": "LTD food",
-        "image": "https://picsum.photos/201"
-    },
-    {
-        "id": "sp003",
-        "name": "xe can cau da nang",
-        "shop": "The gioi do choi",
-        "image": "https://picsum.photos/202"
-    },
-    {
-        "id": "sp004",
-        "name": "do choi dang mo hinh",
-        "shop": "The gioi do choi",
-        "image": "https://picsum.photos/203"
-    },
-    {
-        "id": "sp005",
-        "name": "Lanh dao gian don",
-        "shop": "Minh Long book",
-        "image": "https://picsum.photos/204"
-    },
-    {
-        "id": "sp006",
-        "name": "hieu long con tre",
-        "shop": "Minh Long book",
-        "image": "https://picsum.photos/205"
-    },
-    {
-        "id": "sp007",
-        "name": "Harry potter",
-        "shop": "Minh Long book",
-        "image": "https://picsum.photos/206"
-    },
-    {
-        "id": "sp008",
-        "name": "sach day lap trinh Java",
-        "shop": "Tien Dat book",
-        "image": "https://picsum.photos/207"
-    }
-]
-
 const Item = ({name, image, shop}) => (
   <View style={{ flexDirection:'row',    backgroundColor: 'white',    padding: 20,    marginVertical: 8,    marginHorizontal: 16,  }}>
       <View style={{width:'30%'}}>
