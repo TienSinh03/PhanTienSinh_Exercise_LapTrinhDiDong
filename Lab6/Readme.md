@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > Screen Chat Product <br>
-> API: [[https://66fa5539afc569e13a9b4585.mockapi.io/product/productSearch](https://66fa5539afc569e13a9b4585.mockapi.io/product/product)](https://66fa5539afc569e13a9b4585.mockapi.io/product/product)
+> API: [(https://66fa5539afc569e13a9b4585.mockapi.io/product/product)](https://66fa5539afc569e13a9b4585.mockapi.io/product/product)
 > ![2024-10-0617-03-53-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dddafd8e-6d61-460e-aecc-f3a5dde064e4)
 >
 >  Screen Search Product <br>
