@@ -15,7 +15,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="ScreenAPI_01" component={ScreenAPI_01} options = {{headerShown:false}} />
+        {/* <Stack.Screen name="ScreenAPI_01" component={ScreenAPI_02} options = {{headerShown:false}} /> */}
         <Stack.Screen name="ScreenAPI_02" component={ScreenAPI_02}  options = {{headerShown:false}} />
         <Stack.Screen name="ScreenAPI_03" component={ScreenAPI_03}  options = {{headerShown:false}} />
       </Stack.Navigator>

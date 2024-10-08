@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView,Image, TextInput,FlatList, TouchableOpacity } from 'react-native';
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
-const Task = ({jobName}) => (
+const Task = ({jobName, navigation}) => (
    <View style={[styles.task, styles.elevation]}>
 
           <TouchableOpacity >
@@ -14,7 +15,12 @@ const Task = ({jobName}) => (
           <View style={styles.textWrapper}>
             <Text style={styles.text}>{jobName}</Text>
           </View>
-          <TouchableOpacity >
+          <TouchableOpacity 
+            onPress={() => navigation.navigate({
+              name:'ScreenAPI_03',
+              params: {specify: 'EDIT'},
+            })}
+          >
               <Image source={require('../assets/edit.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
           </TouchableOpacity>
     </View>
@@ -24,13 +30,14 @@ const Task = ({jobName}) => (
 const ScreenAPI_02 = ({navigation,route}) => {
 
     const [data, setData] = useState();
-    const [task, setTask] = useState({
-        content: '',
-    });
 
-    useEffect(() => {
-        fetchApi();
-    }, []);
+    // Sử dụng useFocusEffect: để chạy lại data mõi khi màn hình được focus
+    useFocusEffect(
+      // Sử dụng useCallback để tránh việc render lại các hàm không cần thiết
+      useCallback(() => {
+        fetchApi(); // Gọi hàm fetchAPI khi màn hình được focus
+      }, [])
+    );
 
 
     const fetchApi = async () => {
@@ -41,7 +48,8 @@ const ScreenAPI_02 = ({navigation,route}) => {
         } catch (e) {
           console.log(e);
         }
-      }
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -79,6 +87,7 @@ const ScreenAPI_02 = ({navigation,route}) => {
                           <Task
                             key={item.id}
                             jobName={item.content}
+                            navigation = {navigation}
                             // onDelete={() => deleteTask(item.id)}
                           />
                         )}
@@ -89,7 +98,10 @@ const ScreenAPI_02 = ({navigation,route}) => {
                 
                  <View style={{flex:2,justifyContent:'flex-start'}}>
                   <TouchableOpacity style={styles.buttonAdd}
-                    onPress={() => navigation.navigate('ScreenAPI_03')}
+                    onPress={() => navigation.navigate({
+                      name:'ScreenAPI_03',
+                      params: {specify: 'ADD'},
+                    })}
                   
                   >
                       <Image source={require('../assets/iconPlus.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>

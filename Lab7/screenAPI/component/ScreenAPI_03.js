@@ -12,7 +12,31 @@ import {
 import React, { useEffect, useState } from "react";
 
 const ScreenAPI_03 = ({ navigation, route }) => {
-  
+
+  const [task, setTask] = useState({
+    content: "",
+  });
+
+
+  const handelAddJob = async (event) => {
+    try {
+      const response = await fetch(
+        "https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(task),
+        }
+      );
+      const json = await response.json();
+      setTask({content:""});
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* View nav information  */}
@@ -50,7 +74,7 @@ const ScreenAPI_03 = ({ navigation, route }) => {
 
       {/* View body */}
       <View style={styles.body}>
-        <Text style={styles.titleHeader}>ADD YOUR JOB</Text>
+        <Text style={styles.titleHeader}>{route.params?.specify} YOUR JOB</Text>
 
         <View style={{ flex: 2 }}>
           <View style={styles.inputEmail}>
@@ -63,14 +87,24 @@ const ScreenAPI_03 = ({ navigation, route }) => {
                 marginHorizontal: 10,
               }}
             />
-            <TextInput placeholder="Input your job" style={styles.textInput} />
+            <TextInput
+              placeholder="Input your job"
+              style={styles.textInput}
+              value={task.content}
+              onChangeText={(text) => setTask({ content: text })}
+            />
           </View>
         </View>
 
-        <View style={{ flex: 1}}>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("ScreenAPI_02")}
+
+            onPress={() => {
+                handelAddJob();
+                navigation.navigate("ScreenAPI_02");
+              }
+            }
           >
             <Text style={styles.textButton}>FINISH -> </Text>
           </TouchableOpacity>
@@ -134,13 +168,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: '#00bbd6',
+    backgroundColor: "#00bbd6",
     height: 40,
     width: 190,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-},
+  },
   image: {
     flex: 5,
     width: 271,
@@ -149,10 +183,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textButton: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    textAlign: 'center',
-}
+    textAlign: "center",
+  },
 });
 
 export default ScreenAPI_03;
