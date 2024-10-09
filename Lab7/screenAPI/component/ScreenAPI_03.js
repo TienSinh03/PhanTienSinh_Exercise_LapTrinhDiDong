@@ -18,12 +18,24 @@ const ScreenAPI_03 = ({ navigation, route }) => {
   });
 
 
-  const handelAddJob = async (event) => {
+  useEffect(() => {
+    if (route.params?.specify === 'EDIT' && route.params?.jobName) {
+      setTask({ content: route.params.jobName });
+    }
+  }, [route.params]);
+
+
+  const urlAPI = route.params?.specify === 'ADD' ? 'https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task'
+    : `https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task/${route.params?.taskId}`;
+
+  const methodName = route.params?.specify === 'ADD' ? 'POST' : 'PUT';
+
+  const handelJob = async (event) => {
     try {
       const response = await fetch(
-        "https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task",
+        urlAPI,
         {
-          method: "POST",
+          method: methodName,
           headers: {
             "Content-Type": "application/json",
           },
@@ -36,6 +48,8 @@ const ScreenAPI_03 = ({ navigation, route }) => {
       console.log(e);
     }
   };
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,7 +77,7 @@ const ScreenAPI_03 = ({ navigation, route }) => {
                 paddingLeft: 10,
               }}
             >
-              Hi Twinkle
+              {route.params?.textName}
             </Text>
             <Text style={{ fontSize: 14, lineHeight: 22, color: "#171a1f" }}>
               Have agrate day a head
@@ -101,8 +115,11 @@ const ScreenAPI_03 = ({ navigation, route }) => {
             style={styles.button}
 
             onPress={() => {
-                handelAddJob();
-                navigation.navigate("ScreenAPI_02");
+                handelJob();
+                navigation.navigate({
+                  name:'ScreenAPI_02',
+                  params: {textName:route.params?.textName},
+                });
               }
             }
           >

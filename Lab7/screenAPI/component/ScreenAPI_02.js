@@ -4,25 +4,41 @@ import React,{useEffect, useState,useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 
-
-const Task = ({jobName, navigation}) => (
+// View tasks for list job
+const Task = ({taskId,jobName, navigation, onDelete,textName}) => (
    <View style={[styles.task, styles.elevation]}>
 
-          <TouchableOpacity >
-              <Image source={require('../assets/tickl.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
-          </TouchableOpacity>
+          {/* content job and icon tick */}
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{marginRight:10}}>
+                <Image source={require('../assets/tickl.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
+            </TouchableOpacity>
 
-          <View style={styles.textWrapper}>
-            <Text style={styles.text}>{jobName}</Text>
+            <View style={styles.textWrapper}>
+              <Text style={styles.text}>{jobName}</Text>
+            </View>
           </View>
-          <TouchableOpacity 
-            onPress={() => navigation.navigate({
-              name:'ScreenAPI_03',
-              params: {specify: 'EDIT'},
-            })}
-          >
-              <Image source={require('../assets/edit.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
-          </TouchableOpacity>
+
+          {/* Button execute */}
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            {/* EDIT */}
+            <TouchableOpacity style={{marginRight:15}}
+              onPress={() => navigation.navigate({
+                name:'ScreenAPI_03',
+                params: {specify: 'EDIT', jobName: jobName, taskId: taskId, textName:textName},
+              })}
+            >
+                <Image source={require('../assets/edit.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
+            </TouchableOpacity>
+
+            {/* Delete */}
+            <TouchableOpacity 
+              onPress={() => onDelete()}
+            >
+                <Image source={require('../assets/icons8-delete-27.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
+            </TouchableOpacity>
+          </View>
+          
     </View>
 );
   
@@ -39,7 +55,7 @@ const ScreenAPI_02 = ({navigation,route}) => {
       }, [])
     );
 
-
+    // Hàm fetchAPI: lấy dữ liệu từ API
     const fetchApi = async () => {
         try {
           const respone = await fetch('https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task');
@@ -48,6 +64,20 @@ const ScreenAPI_02 = ({navigation,route}) => {
         } catch (e) {
           console.log(e);
         }
+    }
+
+    // Hàm xóa task
+    const deleteTask = async (id) => {
+      try {
+        await fetch(`https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task/${id}`,
+          {
+            method: 'DELETE',
+          }
+        );
+        fetchApi();
+      } catch (e) {
+        console.log(e);
+      }
     }
 
 
@@ -64,7 +94,7 @@ const ScreenAPI_02 = ({navigation,route}) => {
                     <View style={{flexDirection:'row', alignItems:'center'}}>
                          <Image source={require('../assets/userimage.png')} style = {{resizeMode:'cover', marginRight:10}}/>
                          <View style={{flexDirection:'column'}}>
-                                <Text style={{fontSize: 20, lineHeight: 30, color: '#00000', fontWidth: 'bold', paddingLeft:10}}>Hi Twinkle</Text>
+                                <Text style={{fontSize: 20, lineHeight: 30, color: '#00000', fontWidth: 'bold', paddingLeft:10}}>{route.params?.textName}</Text>
                                 <Text style={{fontSize: 14, lineHeight: 22, color: '#171a1f'}}>Have agrate day a head</Text>
                          </View>
                     </View>
@@ -88,19 +118,22 @@ const ScreenAPI_02 = ({navigation,route}) => {
                             key={item.id}
                             jobName={item.content}
                             navigation = {navigation}
-                            // onDelete={() => deleteTask(item.id)}
+                            onDelete={() => deleteTask(item.id)}
+                            taskId={item.id}
+                            textName = {route.params?.textName}
                           />
                         )}
                       keyExtractor={item => item.id}
                       scrollEnabled={true}
                   />
             </View>
-                
+
+                {/* Button Add */}
                  <View style={{flex:2,justifyContent:'flex-start'}}>
                   <TouchableOpacity style={styles.buttonAdd}
                     onPress={() => navigation.navigate({
                       name:'ScreenAPI_03',
-                      params: {specify: 'ADD'},
+                      params: {specify: 'ADD', textName:route.params?.textName},
                     })}
                   
                   >

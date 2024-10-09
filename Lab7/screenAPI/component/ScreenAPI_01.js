@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView,Image, TextInput,FlatList, Touchab
 import React,{useEffect, useState} from 'react';
 
 const ScreenAPI_01 = ({navigation,route}) => {
+    const [textName, setName] = useState('')
     return (
         <SafeAreaView style={styles.container}>
            {/* View image note book */}
@@ -16,12 +17,12 @@ const ScreenAPI_01 = ({navigation,route}) => {
                 <View style={{flex:2}}>
                     <View style={styles.inputEmail}>
                         <Image source={require('../assets/iconemail.png')} style = {{resizeMode:'cover', width: 27, height: 27, marginHorizontal:10}}/>
-                        <TextInput placeholder="Enter your name"/>
+                        <TextInput placeholder="Enter your name" value={textName} onChangeText={(text) => setName(text)}/>
                     </View>
                 </View>
 
                 <View style={{flex:2}}>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ScreenAPI_02')}>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate({name:'ScreenAPI_02', params: {textName: textName}})}>
                         <Text style={styles.textButton}>GET STARTED -> </Text>
                     </TouchableOpacity>
                 </View>
