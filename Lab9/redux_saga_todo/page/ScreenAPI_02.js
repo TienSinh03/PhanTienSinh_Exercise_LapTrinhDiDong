@@ -4,11 +4,11 @@ import React,{useEffect, useState,useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTodos } from '../../reduxSaga/actionSaga';
+import { fetchTodos, deleteTask } from '../reduxSaga/actionSaga';
 
 
 // View tasks for list job
-const Task = ({taskId,jobName, navigation, onDelete,textName}) => (
+const Task = ({taskId,jobName, navigation, onDelete,itemTask}) => (
    <View style={[styles.task, styles.elevation]}>
 
           {/* content job and icon tick */}
@@ -28,7 +28,7 @@ const Task = ({taskId,jobName, navigation, onDelete,textName}) => (
             <TouchableOpacity style={{marginRight:15}}
               onPress={() => navigation.navigate({
                 name:'ScreenAPI_03',
-                params: {specify: 'EDIT', jobName: jobName, taskId: taskId},
+                params: {specify: 'EDIT', task: itemTask},
               })}
             >
                 <Image source={require('../assets/edit.png')} style = {{resizeMode:'cover', width: 27, height: 27, }}/>
@@ -49,6 +49,7 @@ const Task = ({taskId,jobName, navigation, onDelete,textName}) => (
 function ScreenAPI_02 ({navigation,route}) {
 
     const todos = useSelector((state) => state.todos);
+    console.log(todos);
     const dispatch = useDispatch();
 
     const [data, setData] = useState();
@@ -60,17 +61,6 @@ function ScreenAPI_02 ({navigation,route}) {
         dispatch(fetchTodos());// Gọi hàm fetchAPI khi màn hình được focus
       }, [dispatch])
     );
-
-    // Hàm fetchAPI: lấy dữ liệu từ API
-    const fetchApi = async () => {
-        try {
-          const respone = await fetch('https://67039ce3ab8a8f892730d9f4.mockapi.io/api/task');
-          const json = await respone.json();
-          setData(json);
-        } catch (e) {
-          console.log(e);
-        }
-    }
 
     // Hàm xóa task
     const handelDelete = (id) => {
@@ -109,14 +99,14 @@ function ScreenAPI_02 ({navigation,route}) {
             <View style={{flex:6}}>
               <FlatList
                 data={todos}
+                key={todos.id}
                 renderItem={({ item }) => (
                   <Task
                     key={item.id}
                     jobName={item.content}
                     navigation = {navigation}
                     onDelete={() => handelDelete(item.id)}
-                    taskId={item.id}
-                    textName = {route.params?.textName}
+                    itemTask={item}
                   />
                 )}
                 keyExtractor={item => item.id}

@@ -11,9 +11,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {useDispatch} from 'react-redux';
-// import { addTask, editTask } from "../redux/actions";
-import { addTask, editTask } from "../redux/saga/actionSaga";
-
+import { addTasks,editTask } from "../reduxSaga/actionSaga";
 
 
 
@@ -24,21 +22,23 @@ const ScreenAPI_03 = ({ navigation, route }) => {
   
   const [task, setTask] = useState({
     content: "",
+    id:"",
   });
 
   useEffect(() => {
-    if (route.params?.specify === 'EDIT' && route.params?.jobName) {
-      setTask({ content: route.params.jobName });
+    if (route.params?.specify === 'EDIT' &&  route.params?.task) {
+      setTask({content: route.params?.task.content ,id: route.params?.task.id});
     }
   }, [route.params]);
 
   const handleJob = () => {
     if(route.params?.specify === 'ADD') {
-        dispatch(addTask(task));
+        dispatch(addTasks(task));
     } else {
-        dispatch(editTask(route.params.taskId, task));
+        console.log(task);
+        dispatch(editTask(route.params?.task.id, task));
     }
-    setTask({content:""});
+    setTask({content:"", id:""});
     navigation.navigate('ScreenAPI_02', { textName: route.params?.textName });
 
   };
